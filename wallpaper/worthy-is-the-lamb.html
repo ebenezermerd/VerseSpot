@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Cormorant+SC:wght@300;400&display=block" rel="stylesheet">
+<style>
+html,body{margin:0;width:3840px;height:2160px;overflow:hidden;background:#07080e}
+svg{display:block}
+</style></head><body>
+<svg id="w" width="3840" height="2160" viewBox="0 0 3840 2160" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="40%" r="75%">
+    <stop offset="0" stop-color="#1b1a2b"/>
+    <stop offset=".45" stop-color="#0f1019"/>
+    <stop offset="1" stop-color="#05060a"/>
+  </radialGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e9c983" stop-opacity=".16"/>
+    <stop offset=".55" stop-color="#e9c983" stop-opacity=".05"/>
+    <stop offset="1" stop-color="#e9c983" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#d9b46a" stop-opacity=".22"/>
+    <stop offset=".5" stop-color="#d9b46a" stop-opacity=".05"/>
+    <stop offset="1" stop-color="#d9b46a" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3dfaa"/>
+    <stop offset=".5" stop-color="#d4ab5e"/>
+    <stop offset="1" stop-color="#9c7536"/>
+  </linearGradient>
+  <linearGradient id="thread" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#a3242c" stop-opacity=".9"/>
+    <stop offset="1" stop-color="#a3242c" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .05 0"/></filter>
+  <filter id="soft"><feGaussianBlur stdDeviation="40"/></filter>
+  <filter id="bloom"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<rect width="3840" height="2160" fill="url(#bg)"/>
+<!-- light descending -->
+<polygon points="1830,0 2010,0 2260,1500 1580,1500" fill="url(#beam)" filter="url(#soft)"/>
+<ellipse cx="1920" cy="900" rx="620" ry="620" fill="url(#glow)"/>
+
+<g id="ring" fill="none" stroke="url(#gold)">
+  <circle cx="1920" cy="900" r="440" stroke-width="2" opacity=".85"/>
+  <circle cx="1920" cy="900" r="462" stroke-width=".8" opacity=".3"/>
+</g>
+<g id="seven" font-family="Cormorant SC" font-size="26" letter-spacing="9" fill="#cfb27a" opacity=".75" text-anchor="middle"></g>
+<g id="lamb" fill="none" stroke="#e2c27e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" filter="url(#bloom)"></g>
+<!-- the scarlet thread: slain, yet standing -->
+<rect x="1919" y="1240" width="2" height="340" fill="url(#thread)"/>
+
+<text x="1920" y="1700" text-anchor="middle" font-family="Cormorant Garamond" font-weight="300" font-size="118" letter-spacing="46" fill="#efe4cc">WORTHY IS THE LAMB</text>
+<text x="1920" y="1790" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="300" font-size="40" letter-spacing="3" fill="#b9ab90" opacity=".85">who was slain, to receive power, and riches, and wisdom, and strength, and honour, and glory, and blessing.</text>
+<text x="1920" y="1870" text-anchor="middle" font-family="Cormorant SC" font-size="26" letter-spacing="14" fill="#8f7e5e">revelation 5 · 12</text>
+
+<rect width="3840" height="2160" filter="url(#grain)"/>
+</svg>
+<script>
+const NS="http://www.w3.org/2000/svg";
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e}
+// seven attributes on the upper arc of the ring
+const words=["power","riches","wisdom","strength","honour","glory","blessing"];
+const g7=document.getElementById("seven"), cx=1920, cy=900, R=520;
+words.forEach((w,i)=>{
+  const ang=(-150+ i*20)*Math.PI/180; // -150..-30 deg
+  const x=cx+R*Math.cos(ang), y=cy+R*Math.sin(ang);
+  el("circle",{cx:cx+(R-58)*Math.cos(ang),cy:cy+(R-58)*Math.sin(ang),r:5,fill:"#f1d896",stroke:"none",filter:"url(#bloom)"},g7);
+  const t=el("text",{x,y,transform:`rotate(${(ang*180/Math.PI)+90} ${x} ${y})`},g7); t.textContent=w;
+});
+// The Lamb, slain yet standing: a cross of light in the midst of the throne
+const L=document.getElementById("lamb");
+el("line",{x1:cx,y1:cy-330,x2:cx,y2:cy+330},L);
+el("line",{x1:cx-165,y1:cy-120,x2:cx+165,y2:cy-120},L);
+el("path",{d:`M${cx},${cy-134} L${cx+14},${cy-120} L${cx},${cy-106} L${cx-14},${cy-120} Z`,fill:"#b2303a",stroke:"none",filter:"none"},L);
+document.fonts.ready.then(()=>document.body.dataset.ready=1);
+</script>
+</body></html>
